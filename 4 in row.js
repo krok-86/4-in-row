@@ -120,6 +120,9 @@ function movePlayer(index) {
 }
 
 function checkForWin() {
+  let counter = 0;
+  winnerStr = localStorage.getItem("winner");
+  winner = winnerStr && winnerStr !== "undefined" ? JSON.parse(winnerStr) : "";
   for (let i = 48; i >= 0; i--) {
     if (numbers[i] != 0 && numbers.length) {
       if (i % 7 === 0 || (i - 1) % 7 === 0 || (i - 2) % 7 === 0) {
@@ -131,7 +134,7 @@ function checkForWin() {
             numbers[i] === numbers[i - 14] &&
             numbers[i] === numbers[i - 21])
         ) {
-          createWinBoard();
+          createWinBoard(`winner is ${winner}`);
         }
       } else if ((i - 3) % 7 === 0) {
         if (
@@ -148,7 +151,7 @@ function checkForWin() {
             numbers[i] === numbers[i - 14] &&
             numbers[i] === numbers[i - 21])
         ) {
-          createWinBoard();
+          createWinBoard(`winner is ${winner}`);
         }
       } else {
         if (
@@ -162,19 +165,22 @@ function checkForWin() {
             numbers[i] === numbers[i - 14] &&
             numbers[i] === numbers[i - 21])
         ) {
-          createWinBoard();
+          createWinBoard(`winner is ${winner}`);
         }
       }
+    } else {
+      counter++;
     }
-  }
+  }if (counter === 0) {
+      createWinBoard('draw');
+    }
+  
 }
 
-function createWinBoard() {
+function createWinBoard(a) {
   let winBoard = document.createElement("div");
   winBoard.id = "winBoard";
-  winnerStr = localStorage.getItem("winner");
-  winner = winnerStr && winnerStr !== "undefined" ? JSON.parse(winnerStr) : "";
-  winBoard.innerText = `Winner is ${winner}`;
+    winBoard.innerText = a;
 
   document.body.appendChild(winBoard);
   winBoard.classList.add("winStyle");
